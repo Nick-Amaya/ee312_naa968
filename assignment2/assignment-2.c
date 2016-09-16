@@ -20,16 +20,16 @@ int irishTime[2];
 const char * DAYS[3];
 
 int US_dollar[2];
-float euro;
+double euro;
 
 int farenheit;
-float celsius;
+double celsius;
 
 int US_pounds[2];
-float kilograms;
+double kilograms;
 
-float mile;
-float kilometer;
+double mile;
+double kilometer;
 
 
 //*****************************  Conversion Functions  **********************************
@@ -67,25 +67,25 @@ void AustintoIrish_temp(void) {
 
   celsius = (5.0/9) * (farenheit - 32);
 
-  printf("\nTemperature in Celsius is: %f", celsius);
+  printf("\nTemperature in Celsius is: %lf", celsius);
 }
 
 void AustintoIrish_weight(void) {
   printf("Enter weight in pounds and ounces <pounds> <ounces>: ");
   scanf("%d %d", &US_pounds[0], &US_pounds[1]);
 
-  kilograms = ((float)US_pounds[0] + (US_pounds[1] / 16.0)) * 0.45359327;
+  kilograms = ((double)US_pounds[0] + (US_pounds[1] / 16.0)) * 0.45359327;
 
-  printf("Weight in kg is: %.3f kg", kilograms);
+  printf("Weight in kg is: %1.3f kg", kilograms);
 }
 
 void AustintoIrish_distance(void) {
   printf("Enter distances in miles: ");
-  scanf("%f", &mile);
+  scanf("%lf", &mile);
 
   kilometer = 1.6093439 * mile;
 
-  printf("Distance in km is: %f k", kilometer);
+  printf("Distance in km is: %lf k", kilometer);
 }
 
 //----------IrishtoAustin------------
@@ -108,7 +108,7 @@ void IrishtoAustin_time(void) {
 void IrishtoAustin_currency(void) {
 
   printf("Enter EUR value <euros>: ");
-  scanf("%f", &euro);
+  scanf("%lf", &euro);
 
   euro *= 1.13;
   US_dollar[0] = (int)(euro);
@@ -122,7 +122,7 @@ void IrishtoAustin_temp(void) {
   float round_test;
 
   printf("Enter temperature in Celsius: ");
-  scanf("%f", &celsius);
+  scanf("%lf", &celsius);
 
   farenheit = round_test = ((9.0/5) * celsius) + 32;
 
@@ -137,7 +137,7 @@ void IrishtoAustin_weight(void) {
   int ounces;
 
   printf("Enter weight in kg <kilograms>: ");
-  scanf("%f", &kilograms);
+  scanf("%lf", &kilograms);
 
   ounces = round_test = (kilograms * 35.274);
   if(round_test - ounces >= 0.5)
@@ -151,11 +151,11 @@ void IrishtoAustin_weight(void) {
 
 void IrishtoAustin_distance(void) {
   printf("Enter distances in km: ");
-  scanf("%f", &kilometer);
+  scanf("%lf", &kilometer);
 
   mile = 0.6213712 * kilometer;
 
-  printf("Distance is miles is: %f mi", mile);
+  printf("Distance in miles is: %lf mi", mile);
 }
 
 
