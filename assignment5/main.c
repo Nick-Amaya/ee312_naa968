@@ -106,9 +106,20 @@ void crazyTest3(void){
 	printf("****DONE****\n");
 
 }
+
+void customTest1(void) {
+	printf("\n\n******* Starting Custom Test #1 (Extra Credit) *******\n");
+	char dictionary[] = "live\nOh'fire\nfirefly";
+	char article[] = "fire live fire fire live";
+	spellCheck(article, dictionary); // should print: fire
+	printf("****DONE****\n");
+}
+
+
 /* you should also make your own tests! */
 int main(void) {
     /* for starters, uncomment the following tests, one at a time */
+
   fruityTest();
   dogTest();
   punctuationTests();
@@ -118,4 +129,5 @@ int main(void) {
 	crazyTest1();
 	crazyTest2();
 	crazyTest3();
+	customTest1();
 }
