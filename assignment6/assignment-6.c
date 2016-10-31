@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define HEAP_SIZE 100
+#define HEAP_SIZE 10000
 
 int64_t * jumpUp_Knuth(int64_t *);
 int64_t * jumpDown_Knuth(int64_t *);
@@ -27,6 +27,7 @@ char *my_malloc(char heap[], int numbytes) {
   if(numbytes % 4 > 0) {
     numWords++;
   }
+  if(numWords == 0) return NULL;
 
   while((char *) metadata_ptr > heap) {
     if(*metadata_ptr > 0) {
