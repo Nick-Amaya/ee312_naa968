@@ -26,6 +26,7 @@ char *my_malloc(char heap[], int numbytes) {
   int32_t numWords = numbytes / 4;
   if(numbytes % 4 > 0) {
     numWords++;
+    
   }
   if(numWords == 0) return NULL;
 
