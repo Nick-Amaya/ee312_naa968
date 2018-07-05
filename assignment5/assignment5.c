@@ -110,9 +110,9 @@ size_t identifyWords(char output[][MAX_WORDLEN], char article[]) {
 			if(wordflg) {
 				wordflg = 0;
 				if(count > 1) {
-          output[output_index++][temp_index] = '\0';
+                    output[output_index++][temp_index] = '\0';
 				}
-        temp_index = 0;
+                temp_index = 0;
 				count = 0;
 			}
 		}
@@ -256,7 +256,7 @@ void findMsWords(char MSwords[][MAX_WORDLEN], char words[][MAX_WORDLEN], size_t 
 //TODO:
 void spellCheck(char article[], char dictionary[]) {
 
-	char words[MAX_WORDSINART][MAX_WORDLEN];
+    char words[MAX_WORDSINART][MAX_WORDLEN];
   char MSwords[MAX_WORDSINART][MAX_WORDLEN];
   char dictionaryArr[MAX_DICTLEN][MAX_WORDLEN];
 
