@@ -7,6 +7,7 @@
 
 
 #include <stdio.h>
+#include "../lib/minunit.h"
 
 #define hours 0
 #define mins  1
@@ -157,7 +158,6 @@ void IrishtoAustin_distance(void) {
 
   printf("Distance in miles is: %lf mi", mile);
 }
-
 
 //*********************************  Main Program  ******************************************
 int main(void) {
