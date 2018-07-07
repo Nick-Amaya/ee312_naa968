@@ -6,8 +6,10 @@
 */
 
 
+#include <stdlib.h>
 #include <stdio.h>
-#include "../lib/minunit.h"
+
+#include "assignment2.h"
 
 #define hours 0
 #define mins  1
@@ -16,6 +18,7 @@
 #define next  2
 
 //****************************  I/O Variable Place Holders  **************************
+
 int austinTime[2];
 int irishTime[2];
 const char * DAYS[3];
@@ -35,24 +38,58 @@ double kilometer;
 
 //*****************************  Conversion Functions  **********************************
 //-------------AusintoIrish-------------
-void AustintoIrish_time(void) {
-  int day = same;
-
+static time_t*
+prompt_austin_time()
+{
+  time_t* austin = malloc(sizeof(time_t));
   printf("Enter Austin time to be converted, expressed in hours and minutes <hours> <minutes>: ");
-  scanf("%d %d", &austinTime[hours], &austinTime[mins]);
-
-  irishTime[hours] = austinTime[hours] - 6;
-  irishTime[mins] = austinTime[mins];
-
-  if(austinTime[hours] <= 6) {
-    irishTime[hours] += 24;
-    day = prev;
-  }
-
-  printf("The time in Ireland equivalent to %d %02d in Austin is %d %02d of the %s day\n", austinTime[hours], austinTime[mins], irishTime[hours], irishTime[mins], DAYS[day]);
+  scanf("%d %d", &(austin->hour), &(austin->min));
+  return austin;
 }
 
-void AustintoIrish_currency(void) {
+static void
+print_time(time_t* austin, time_t* irish)
+{
+  printf("The time in Ireland equivalent to %d %02d in Austin is %d %02d of the %s day\n", 
+      austin->hour, austin->min, irish->hour, irish->min, irish->day);
+}
+
+time_t*
+calculate_a2i_time(const time_t* austin) 
+{
+  time_t* irish = malloc(sizeof(time_t));
+
+  irish->day = "same";
+  irish->hour = (austin->hour + 6) % 24;
+  irish->min = austin->min;
+
+  if (irish->hour <= 6) {
+    irish->day = "next";
+  }
+
+  return irish;
+}
+
+static void 
+a2i_time_clean_up(time_t* austin, time_t* irish)
+{
+  free(austin);
+  free(irish);
+}
+
+void 
+a2i_time() 
+{
+  time_t* austin = prompt_austin_time();
+  time_t* irish = calculate_a2i_time(austin);
+  print_time(austin, irish);
+  a2i_time_clean_up(austin, irish);
+}
+
+
+void 
+a2i_currency(void) 
+{
   printf("Enter USD value <dollar> <cents>: ");
   scanf("%d %d", &US_dollar[0], &US_dollar[1]);
 
@@ -62,7 +99,9 @@ void AustintoIrish_currency(void) {
   printf("\nEUR value is: %.2f Euros\n", euro);
 }
 
-void AustintoIrish_temp(void) {
+void 
+a2i_temperature(void) 
+{
   printf("Enter temperature in Farenheit: ");
   scanf("%d", &farenheit);
 
@@ -71,7 +110,9 @@ void AustintoIrish_temp(void) {
   printf("\nTemperature in Celsius is: %lf", celsius);
 }
 
-void AustintoIrish_weight(void) {
+void 
+a2i_weight(void) 
+{
   printf("Enter weight in pounds and ounces <pounds> <ounces>: ");
   scanf("%d %d", &US_pounds[0], &US_pounds[1]);
 
@@ -80,7 +121,9 @@ void AustintoIrish_weight(void) {
   printf("Weight in kg is: %1.3f kg", kilograms);
 }
 
-void AustintoIrish_distance(void) {
+void 
+a2i_distance(void) 
+{
   printf("Enter distances in miles: ");
   scanf("%lf", &mile);
 
@@ -90,24 +133,29 @@ void AustintoIrish_distance(void) {
 }
 
 //----------IrishtoAustin------------
-void IrishtoAustin_time(void) {
+void 
+i2a_time(void) 
+{
   int day = same;
 
   printf("Enter Irish time to be converted, expressed in hours and minutes: ");
   scanf("%d %d", &irishTime[0], &irishTime[1]);
 
-  austinTime[hours] = (irishTime[hours] + 6) % 24;
-  austinTime[mins] = irishTime[mins];
+  // irish->day = "same";
+  // irish->hour = austin->hour - 6;
+  // irish->min  = austin->min;
 
-  if(austinTime[hours] % 24 <= 6) {
-    day = next;
-  }
+  // if (austin->hour <= 6) {
+  //   irish->day = "previous";
+  //   irish->hour += 24;
+  // }
 
   printf("The time in Austin equivalent to %d %02d in Ireland is %d %02d of the %s day\n", irishTime[hours], irishTime[mins], austinTime[hours], austinTime[mins], DAYS[day]);
 }
 
-void IrishtoAustin_currency(void) {
-
+void 
+i2a_currency(void) 
+{
   printf("Enter EUR value <euros>: ");
   scanf("%lf", &euro);
 
@@ -116,10 +164,11 @@ void IrishtoAustin_currency(void) {
   US_dollar[1] = (euro - US_dollar[0]) * 100;
 
   printf("\nUSD value is: $%d.%d\n", US_dollar[0], US_dollar[1]);
-
 }
 
-void IrishtoAustin_temp(void) {
+void 
+i2a_temperature(void) 
+{
   float round_test;
 
   printf("Enter temperature in Celsius: ");
@@ -133,7 +182,9 @@ void IrishtoAustin_temp(void) {
   printf("Temperature in Farenheit: %d\n", farenheit);
 }
 
-void IrishtoAustin_weight(void) {
+void 
+i2a_weight(void) 
+{
   float round_test;
   int ounces;
 
@@ -150,7 +201,9 @@ void IrishtoAustin_weight(void) {
   printf("Weight in pounds and ounces is: %d lb, %d oz\n", US_pounds[0], US_pounds[1]);
 }
 
-void IrishtoAustin_distance(void) {
+void 
+i2a_distance(void) 
+{
   printf("Enter distances in km: ");
   scanf("%lf", &kilometer);
 
@@ -160,36 +213,36 @@ void IrishtoAustin_distance(void) {
 }
 
 //*********************************  Main Program  ******************************************
-int main(void) {
+// int 
+// main(void) 
+// {
+//   unsigned int conversionType = 0;
+//   DAYS[prev] = "previous";
+//   DAYS[same] = "same";
+//   DAYS[next] = "next";
 
-  unsigned int conversionType = 0;
-  DAYS[prev] = "previous";
-  DAYS[same] = "same";
-  DAYS[next] = "next";
+//   while (conversionType != 11) {
+//     printf("\nEnter a number from the menu (1-11) to select a specific conversion to perform or to quit: ");
+//     scanf("%d", &conversionType);
 
-  while(conversionType != 11) {
+//     switch (conversionType) {
+//       case 1: a2i_time(); break;
+//       case 2: i2a_time(); break;
+//       case 3: a2i_currency(); break;
+//       case 4: i2a_currency(); break;
+//       case 5: a2i_temperature(); break;
+//       case 6: i2a_temperature(); break;
+//       case 7: i2a_weight(); break;
+//       case 8: a2i_weight(); break;
+//       case 9: i2a_distance(); break;
+//       case 10: a2i_distance(); break;
+//       case 11: printf("Goodbye\n\n"); break;
+//       default: printf("\nYou entered an invalid menu item. Please try again.\n"); break;
+//     }
+//   }
 
-    printf("\nEnter a number from the menu (1-11) to select a specific conversion to perform or to quit: ");
-    scanf("%d", &conversionType);
-
-    switch (conversionType) {
-      case 1: AustintoIrish_time(); break;
-      case 2: IrishtoAustin_time(); break;
-      case 3: AustintoIrish_currency(); break;
-      case 4: IrishtoAustin_currency(); break;
-      case 5: AustintoIrish_temp(); break;
-      case 6: IrishtoAustin_temp(); break;
-      case 7: IrishtoAustin_weight(); break;
-      case 8: AustintoIrish_weight(); break;
-      case 9: IrishtoAustin_distance(); break;
-      case 10: AustintoIrish_distance(); break;
-      case 11: printf("Goodbye\n\n"); break;
-      default: printf("\nYou entered an invalid menu item. Please try again.\n"); break;
-    }
-  }
-
-  return 0;
-}
+//   return 0;
+// }
 
 /*
   1. Convert a given Austin time to Irish time

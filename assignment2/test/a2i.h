@@ -2,12 +2,8 @@
 #ifndef __A2I_TESTS__
 #define __A2I_TESTS__
 
-char* austinToIrishTimeTest();
-char* austinToIrishCurrencyTest();
-char* austinToIrishTemperatureTest();
-char* austinToIrishWeightTest();
-char* austinToIrishDistanceTest();
-
-char* exitTest();
+const char* a2i_time_1030();
+const char* a2i_time_2250();
+const char* a2i_time_1800();
 
 #endif

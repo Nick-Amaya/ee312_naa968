@@ -2,19 +2,37 @@
 TARGET       := a2.bin
 OBJECTS      := src/assignment2.o 
 TEST_TARGET  := a2.test.bin 
-TEST_OBJECTS := test/test.o test/a2i.o test/i2a.o
+TEST_OBJECTS := test/a2i.o test/i2a.o test/test.o 
+GCC_FLAGS    := -Wall -Wextra -ggdb
 
-$(TARGET): $(OBJECTS)
-	gcc -Wall -o $(TARGET) $(OBJECTS)
+all: build run
+test: build-test run-test
 
-$(TEST_TARGET): $(TEST_OBJECTS)
-	gcc -Wall -o $(TEST_TARGET) $(TEST_OBJECTS)
+build: $(OBJECTS)
+	gcc $(GCC_FLAGS) -o $(TARGET) $(OBJECTS)
 
-assignment2.o: src/assignment2.c
-test.o: test/test.c
-a2i.o: test/a2i.c
-i2a.o: test/i2a.c
+run: $(TARGET)
+	./$(TARGET)
+
+build-test: $(OBJECTS) $(TEST_OBJECTS)
+	gcc $(GCC_FLAGS) -o $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS)
+
+run-test:
+	./$(TEST_TARGET)
+
+# -c Flag: Compile but do not link! Only want to link in the last step.
+src/assignment2.o: src/assignment2.c
+	gcc $(GCC_FLAGS) -c -o $@ $^
+
+test/test.o: test/test.c
+	gcc $(GCC_FLAGS) -c -o $@ $^
+
+test/a2i.o: test/a2i.c
+	gcc $(GCC_FLAGS) -c -o $@ $^
+
+test/i2a.o: test/i2a.c
+	gcc $(GCC_FLAGS) -c -o $@ $^
 
 .PHONY: clean
 clean:
-	rm $(TARGET) $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS)
+	$(RM) $(TARGET) $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS)

@@ -4,29 +4,27 @@
 #include "a2i.h"
 #include "i2a.h"
 
-int testsRun = 0;
+int tests_run = 0;
 
-static char* testAll() {
-    mu_run_test(austinToIrishTimeTest);
-    mu_run_test(austinToIrishCurrencyTest);
-    mu_run_test(austinToIrishTemperatureTest);
-    mu_run_test(austinToIrishWeightTest);
-    mu_run_test(austinToIrishDistanceTest);
-    mu_run_test(irishToAustinTimeTest);
-    mu_run_test(irishToAustinCurrencyTest);
-    mu_run_test(irishToAustinTemperatureTest);
-    mu_run_test(irishToAustinWeightTest);
-    mu_run_test(irishToAustinDistanceTest);
-    mu_run_test(exitTest);
+static const char* 
+test_all() 
+{
+    mu_run_test(a2i_time_1030);
+    mu_run_test(a2i_time_2250);
+    mu_run_test(a2i_time_1800);
     return 0;
 }
 
-int main() {
-  char* result = testAll();
+int 
+main() 
+{
+  const char* result = test_all();
   if (result != 0) {
     printf("ERROR: %s\n", result);
+    printf("Failed on test: %d\n", tests_run);
+    printf("%d TESTS PASSED.\n", tests_run-1);
   } else {
-    printf("ALL TESTS PASSED\n");
+    printf("ALL TESTS PASSED (%d)\n", tests_run);
   }
   return result != 0;
 }
