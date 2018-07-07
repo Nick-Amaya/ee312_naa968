@@ -32,38 +32,38 @@ double kilometer;
 
 //*****************************  Conversion Functions  **********************************
 //-------------AusintoIrish-------------
-static time_t*
+
+static const time_t*
 prompt_austin_time()
 {
   time_t* austin = malloc(sizeof(time_t));
   printf("Enter Austin time to be converted, expressed in hours and minutes <hours> <minutes>: ");
   scanf("%d %d", &(austin->hour), &(austin->min));
-  return austin;
+  return (const time_t*) austin;
 }
 
 static void
-print_time(time_t* austin, time_t* irish)
+print_time(const time_t* austin, const time_t* irish)
 {
   printf("The time in Ireland equivalent to %d %02d in Austin is %d %02d of the %s day\n", 
       austin->hour, austin->min, irish->hour, irish->min, irish->day);
 }
 
 static void 
-a2i_time_clean_up(time_t* austin, time_t* irish)
+a2i_time_clean_up(const time_t* austin, const time_t* irish)
 {
-  free(austin);
-  free(irish);
+  free((time_t*) austin);
+  free((time_t*) irish);
 }
 
 static void 
 a2i_time() 
 {
-  time_t* austin = prompt_austin_time();
-  time_t* irish = calculate_a2i_time(austin);
+  const time_t* austin = prompt_austin_time();
+  const time_t* irish = calculate_a2i_time(austin);
   print_time(austin, irish);
   a2i_time_clean_up(austin, irish);
 }
-
 
 void 
 a2i_currency(void) 

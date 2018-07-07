@@ -45,4 +45,4 @@ src/app/i2a.o: src/app/i2a.c
 
 .PHONY: clean
 clean:
-	$(RM) $(TARGET) $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS)
+	$(RM) $(TARGET) $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS) src/assignment-2.o
