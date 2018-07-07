@@ -1,15 +1,9 @@
-/*
-  Amaya, Nicholas
-  naa968
-  16300
-  EE312 Assignment 2: Manipulating Numeric Data
-*/
-
 
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <assignment2.h>
+#include <app/app.h>
+#include <app/a2i.h>
 
 #define hours 0
 #define mins  1
@@ -21,7 +15,7 @@
 
 int austinTime[2];
 int irishTime[2];
-const char * DAYS[3];
+const char* DAYS[3];
 
 int US_dollar[2];
 double euro;
@@ -54,22 +48,6 @@ print_time(time_t* austin, time_t* irish)
       austin->hour, austin->min, irish->hour, irish->min, irish->day);
 }
 
-time_t*
-calculate_a2i_time(const time_t* austin) 
-{
-  time_t* irish = malloc(sizeof(time_t));
-
-  irish->day = "same";
-  irish->hour = (austin->hour + 6) % 24;
-  irish->min = austin->min;
-
-  if (irish->hour <= 6) {
-    irish->day = "next";
-  }
-
-  return irish;
-}
-
 static void 
 a2i_time_clean_up(time_t* austin, time_t* irish)
 {
@@ -77,7 +55,7 @@ a2i_time_clean_up(time_t* austin, time_t* irish)
   free(irish);
 }
 
-void 
+static void 
 a2i_time() 
 {
   time_t* austin = prompt_austin_time();
@@ -213,37 +191,6 @@ i2a_distance(void)
 }
 
 //*********************************  Main Program  ******************************************
-// int 
-// main(void) 
-// {
-//   unsigned int conversionType = 0;
-//   DAYS[prev] = "previous";
-//   DAYS[same] = "same";
-//   DAYS[next] = "next";
-
-//   while (conversionType != 11) {
-//     printf("\nEnter a number from the menu (1-11) to select a specific conversion to perform or to quit: ");
-//     scanf("%d", &conversionType);
-
-//     switch (conversionType) {
-//       case 1: a2i_time(); break;
-//       case 2: i2a_time(); break;
-//       case 3: a2i_currency(); break;
-//       case 4: i2a_currency(); break;
-//       case 5: a2i_temperature(); break;
-//       case 6: i2a_temperature(); break;
-//       case 7: i2a_weight(); break;
-//       case 8: a2i_weight(); break;
-//       case 9: i2a_distance(); break;
-//       case 10: a2i_distance(); break;
-//       case 11: printf("Goodbye\n\n"); break;
-//       default: printf("\nYou entered an invalid menu item. Please try again.\n"); break;
-//     }
-//   }
-
-//   return 0;
-// }
-
 /*
   1. Convert a given Austin time to Irish time
   2. Convert a given Irish time to Austin time
@@ -257,3 +204,33 @@ i2a_distance(void)
   10. Convert a given distance in miles to km
   11. Stop doing conversions and quit the program
 */
+int 
+run_app() 
+{
+  unsigned int conversionType = 0;
+  DAYS[prev] = "previous";
+  DAYS[same] = "same";
+  DAYS[next] = "next";
+
+  while (conversionType != 11) {
+    printf("\nEnter a number from the menu (1-11) to select a specific conversion to perform or to quit: ");
+    scanf("%d", &conversionType);
+
+    switch (conversionType) {
+      case 1: a2i_time(); break;
+      case 2: i2a_time(); break;
+      case 3: a2i_currency(); break;
+      case 4: i2a_currency(); break;
+      case 5: a2i_temperature(); break;
+      case 6: i2a_temperature(); break;
+      case 7: i2a_weight(); break;
+      case 8: a2i_weight(); break;
+      case 9: i2a_distance(); break;
+      case 10: a2i_distance(); break;
+      case 11: printf("Goodbye\n\n"); break;
+      default: printf("\nYou entered an invalid menu item. Please try again.\n"); break;
+    }
+  }
+
+  return 0;
+}

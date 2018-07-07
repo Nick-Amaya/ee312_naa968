@@ -4,7 +4,7 @@
 #include <string.h>
 #include <lib/minunit.h>
 
-#include <assignment2.h>
+#include <app/a2i.h>
 #include <test/a2i.h>
 
 static const char* assert_time_equals(const char* prefix, const time_t* expected, const time_t* actual);
