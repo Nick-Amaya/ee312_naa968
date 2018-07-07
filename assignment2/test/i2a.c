@@ -1,5 +1,5 @@
 
-#include "i2a.h"
+#include <test/i2a.h>
 
 char* irishToAustinTimeTest() {
     return 0;

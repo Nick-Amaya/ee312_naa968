@@ -3,7 +3,8 @@ TARGET       := a2.bin
 OBJECTS      := src/assignment2.o 
 TEST_TARGET  := a2.test.bin 
 TEST_OBJECTS := test/a2i.o test/i2a.o test/test.o 
-GCC_FLAGS    := -Wall -Wextra -ggdb
+INCLUDES     := -I"$(shell pwd)/inc"
+GCC_FLAGS    := -Wall -Wextra -ggdb $(INCLUDES)
 
 all: build run
 test: build-test run-test

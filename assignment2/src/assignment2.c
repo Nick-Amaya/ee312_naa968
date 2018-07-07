@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "assignment2.h"
+#include <assignment2.h>
 
 #define hours 0
 #define mins  1

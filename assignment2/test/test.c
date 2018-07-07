@@ -1,8 +1,8 @@
 
 #include <stdio.h>
-#include "../lib/minunit.h"
-#include "a2i.h"
-#include "i2a.h"
+#include <lib/minunit.h>
+#include <test/a2i.h>
+#include <test/i2a.h>
 
 int tests_run = 0;
 

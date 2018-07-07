@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../lib/minunit.h"
+#include <lib/minunit.h>
 
-#include "../src/assignment2.h"
-#include "a2i.h"
+#include <assignment2.h>
+#include <test/a2i.h>
 
 static const char* assert_time_equals(const char* prefix, const time_t* expected, const time_t* actual);
 
@@ -19,7 +19,8 @@ a2i_time_1030()
 }
 
 const char* 
-a2i_time_2250() {
+a2i_time_2250() 
+{
     const time_t austin = {0, 22, 50};
     const time_t* irish = calculate_a2i_time(&austin);
     const time_t expected = {"next", 4, 50};
