@@ -9,14 +9,14 @@ GCC_FLAGS    := -Wall -Wextra -ggdb $(INCLUDES)
 all: build run
 test: build-test run-test
 
-build: $(OBJECTS)
-	gcc $(GCC_FLAGS) -o $(TARGET) $(OBJECTS) src/assignment-2.o
+build: $(OBJECTS) src/assignment-2.o
+	gcc $(GCC_FLAGS) -o $(TARGET) $^
 
 run: $(TARGET)
-	./$(TARGET)
+	./$<
 
 build-test: $(OBJECTS) $(TEST_OBJECTS)
-	gcc $(GCC_FLAGS) -o $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS)
+	gcc $(GCC_FLAGS) -o $(TEST_TARGET) $^
 
 run-test:
 	./$(TEST_TARGET)

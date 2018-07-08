@@ -1,6 +1,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <app/app.h>
 #include <app/a2i.h>
@@ -12,10 +13,12 @@
 #define next  2
 
 //****************************  I/O Variable Place Holders  **************************
-
-int austinTime[2];
-int irishTime[2];
-const char* DAYS[3];
+typedef struct {
+  const void* (*prompt)();
+  const void* (*calculate)(const void*);
+  void (*print)(const void*, const void*);
+  void (*clean_up)(const void*, const void*);
+} component_t;
 
 int US_dollar[2];
 double euro;
@@ -32,8 +35,17 @@ double kilometer;
 
 //*****************************  Conversion Functions  **********************************
 //-------------AusintoIrish-------------
+/**
+ * Terminal component 1
+ */ 
+static const void* 
+calculate_a2i_time_app_wrapper(const void* austin_generic) 
+{
+  const time_t* austin = (const time_t*) austin_generic;
+  return (const void*) calculate_a2i_time(austin);
+}
 
-static const time_t*
+static const void*
 prompt_austin_time()
 {
   time_t* austin = malloc(sizeof(time_t));
@@ -43,26 +55,46 @@ prompt_austin_time()
 }
 
 static void
-print_time(const time_t* austin, const time_t* irish)
+print_time(const void* austin_ptr, const void* irish_ptr)
 {
+  time_t* austin = (time_t*) austin_ptr;
+  time_t* irish  = (time_t*) irish_ptr;
   printf("The time in Ireland equivalent to %d %02d in Austin is %d %02d of the %s day\n", 
       austin->hour, austin->min, irish->hour, irish->min, irish->day);
 }
 
 static void 
-a2i_time_clean_up(const time_t* austin, const time_t* irish)
+a2i_time_clean_up(const void* austin, const void* irish)
 {
-  free((time_t*) austin);
-  free((time_t*) irish);
+  free((void*) austin);
+  free((void*) irish);
 }
 
-static void 
-a2i_time() 
+/**
+ * Terminal component 2
+ */ 
+void 
+i2a_time(void) 
 {
-  const time_t* austin = prompt_austin_time();
-  const time_t* irish = calculate_a2i_time(austin);
-  print_time(austin, irish);
-  a2i_time_clean_up(austin, irish);
+  // const time_t* irish = prompt_irish_time();
+  // const time_t* austin = calculate_i2a_time(irish);
+  // print_time(austin, irish);
+  // a2i_time_clean_up(austin, irish);
+  // int day = same;
+
+  // printf("Enter Irish time to be converted, expressed in hours and minutes: ");
+  // scanf("%d %d", &irishTime[0], &irishTime[1]);
+
+  // // irish->day = "same";
+  // // irish->hour = austin->hour - 6;
+  // // irish->min  = austin->min;
+
+  // // if (austin->hour <= 6) {
+  // //   irish->day = "previous";
+  // //   irish->hour += 24;
+  // // }
+
+  // printf("The time in Austin equivalent to %d %02d in Ireland is %d %02d of the %s day\n", irishTime[hours], irishTime[mins], austinTime[hours], austinTime[mins], DAYS[day]);
 }
 
 void 
@@ -111,25 +143,6 @@ a2i_distance(void)
 }
 
 //----------IrishtoAustin------------
-void 
-i2a_time(void) 
-{
-  int day = same;
-
-  printf("Enter Irish time to be converted, expressed in hours and minutes: ");
-  scanf("%d %d", &irishTime[0], &irishTime[1]);
-
-  // irish->day = "same";
-  // irish->hour = austin->hour - 6;
-  // irish->min  = austin->min;
-
-  // if (austin->hour <= 6) {
-  //   irish->day = "previous";
-  //   irish->hour += 24;
-  // }
-
-  printf("The time in Austin equivalent to %d %02d in Ireland is %d %02d of the %s day\n", irishTime[hours], irishTime[mins], austinTime[hours], austinTime[mins], DAYS[day]);
-}
 
 void 
 i2a_currency(void) 
@@ -191,6 +204,53 @@ i2a_distance(void)
 }
 
 //*********************************  Main Program  ******************************************
+
+component_t*
+build_components()
+{
+  component_t* components = malloc(10*sizeof(component_t));
+
+  component_t components_initializer[] = {
+    {prompt_austin_time, calculate_a2i_time_app_wrapper, print_time, a2i_time_clean_up},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0}
+  };
+
+  return memcpy(components, components_initializer, sizeof(components_initializer));
+}
+
+component_t*
+rewire(component_t* components, int selection) 
+{
+  return &(components[selection-1]);
+}
+
+int 
+prompt_user() 
+{
+  int selection;
+  printf("\nEnter a number from the menu (1-11) to select a specific conversion to perform or to quit: ");
+  scanf("%d", &selection);
+  return selection;
+}
+
+void
+run_template(component_t* component)
+{
+  const void* user_input = component->prompt();
+  const void* calculation = component->calculate(user_input);
+  component->print(user_input, calculation);
+  component->clean_up(user_input, calculation);
+}
+
+
 /*
   1. Convert a given Austin time to Irish time
   2. Convert a given Irish time to Austin time
@@ -204,33 +264,24 @@ i2a_distance(void)
   10. Convert a given distance in miles to km
   11. Stop doing conversions and quit the program
 */
+/**
+ * TODO: Initialize components.
+ * NOTE: Squash commits before pushing.
+ */
 int 
 run_app() 
 {
-  unsigned int conversionType = 0;
-  DAYS[prev] = "previous";
-  DAYS[same] = "same";
-  DAYS[next] = "next";
+  component_t* components = build_components();
+  unsigned int selection;
+  component_t* component;
 
-  while (conversionType != 11) {
-    printf("\nEnter a number from the menu (1-11) to select a specific conversion to perform or to quit: ");
-    scanf("%d", &conversionType);
+  do {
+    selection = prompt_user();
+    component = rewire(components, selection);
+    run_template(component);
+  } while (selection != 11);
 
-    switch (conversionType) {
-      case 1: a2i_time(); break;
-      case 2: i2a_time(); break;
-      case 3: a2i_currency(); break;
-      case 4: i2a_currency(); break;
-      case 5: a2i_temperature(); break;
-      case 6: i2a_temperature(); break;
-      case 7: i2a_weight(); break;
-      case 8: a2i_weight(); break;
-      case 9: i2a_distance(); break;
-      case 10: a2i_distance(); break;
-      case 11: printf("Goodbye\n\n"); break;
-      default: printf("\nYou entered an invalid menu item. Please try again.\n"); break;
-    }
-  }
+  free(components);
 
   return 0;
 }
