@@ -3,7 +3,7 @@
 
 #include <app/a2i.h>
 
-time_t*
+const time_t*
 calculate_a2i_time(const time_t* austin) 
 {
   time_t* irish = malloc(sizeof(time_t));

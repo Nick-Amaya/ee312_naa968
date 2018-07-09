@@ -4,7 +4,6 @@
 
 #include <app/models.h>
 
-time_t*
-calculate_a2i_time(const time_t*);
+const time_t* calculate_a2i_time(const time_t*);
 
 #endif

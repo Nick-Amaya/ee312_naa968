@@ -2,7 +2,7 @@
 TARGET       := a2.bin
 OBJECTS      := src/app/i2a.o src/app/a2i.o src/app/app.o
 TEST_TARGET  := a2.test.bin 
-TEST_OBJECTS := test/a2i.o test/i2a.o test/test.o 
+TEST_OBJECTS := test/models.o test/a2i.o test/i2a.o test/test.o 
 INCLUDES     := -I"$(shell pwd)/inc"
 GCC_FLAGS    := -Wall -Wextra -ggdb $(INCLUDES)
 
@@ -32,6 +32,9 @@ test/a2i.o: test/a2i.c
 	gcc $(GCC_FLAGS) -c -o $@ $^
 
 test/i2a.o: test/i2a.c
+	gcc $(GCC_FLAGS) -c -o $@ $^
+
+test/models.o: test/models.c
 	gcc $(GCC_FLAGS) -c -o $@ $^
 
 src/app/app.o: src/app/app.c
