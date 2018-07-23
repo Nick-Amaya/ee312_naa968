@@ -18,3 +18,14 @@ calculate_a2i_time(const time_t* austin)
 
   return irish;
 }
+
+const euro_t*
+calculate_a2i_currency(const usd_t* usd)
+{
+  euro_t* euro = malloc(sizeof(euro_t));
+
+  euro->value = usd->dollars + (usd->cents / 100.0);
+  euro->value *= 0.89;
+
+  return euro;
+}

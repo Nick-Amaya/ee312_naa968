@@ -28,7 +28,7 @@ double mile;
 double kilometer;
 
 /**
- * Terminal component 1
+ * Terminal component 1: Austin Time -> Ireland Time
  */ 
 static const void*
 prompt_austin_time()
@@ -63,7 +63,7 @@ a2i_time_clean_up(const void* austin, const void* irish)
 }
 
 /**
- * Terminal component 2
+ * Terminal component 2: Ireland Time -> Austin Time
  */ 
 static const void*
 prompt_irish_time()
@@ -98,19 +98,53 @@ i2a_time_clean_up(const void* irish, const void* austin)
 }
 
 /**
- * Terminal Component 3
+ * Terminal Component 3: USD -> Euro
  */
-void 
-a2i_currency(void) 
+// void 
+// a2i_currency(void) 
+// {
+//   printf("Enter USD value <dollar> <cents>: ");
+//   scanf("%d %d", &US_dollar[0], &US_dollar[1]);
+
+//   euro = US_dollar[0] + (US_dollar[1] / 100.0);
+//   euro *= 0.89;
+
+//   printf("\nEUR value is: %.2f Euros\n", euro);
+// }
+static const void*
+prompt_usd()
 {
+  usd_t* usd = malloc(sizeof(usd_t));
   printf("Enter USD value <dollar> <cents>: ");
-  scanf("%d %d", &US_dollar[0], &US_dollar[1]);
-
-  euro = US_dollar[0] + (US_dollar[1] / 100.0);
-  euro *= 0.89;
-
-  printf("\nEUR value is: %.2f Euros\n", euro);
+  scanf("%d %d", &(usd->dollars), &(usd->cents));
+  return (const usd_t*) usd;
 }
+
+static const void* 
+calculate_a2i_currency_app_wrapper(const void* generic_usd) 
+{
+  return (const void*) calculate_a2i_currency((const usd_t*) generic_usd);
+}
+
+// static void
+// print_i2a_time(const void* generic_irish, const void* generic_austin)
+// {
+//   time_t* irish  = (time_t*) generic_irish;
+//   time_t* austin = (time_t*) generic_austin;
+//   printf("The time in Austin equivalent to %d %02d in Ireland is %d %02d of the %s day\n", 
+//       irish->hour, irish->min, austin->hour, austin->min, austin->day);
+// }
+
+// static void 
+// i2a_time_clean_up(const void* irish, const void* austin)
+// {
+//   free((void*) irish);
+//   free((void*) austin);
+// }
+
+/**
+ * Terminal Component 4: Euro -> USD
+ */
 
 void 
 a2i_temperature(void) 

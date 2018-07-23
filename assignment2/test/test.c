@@ -12,6 +12,12 @@ test_all()
     mu_run_test(a2i_time_1030);
     mu_run_test(a2i_time_2250);
     mu_run_test(a2i_time_1800);
+    mu_run_test(i2a_time_1220);
+    mu_run_test(i2a_time_345);
+    mu_run_test(i2a_time_500);
+    mu_run_test(a2i_currency_418);
+    mu_run_test(a2i_currency_0);
+    mu_run_test(a2i_currency_2099);
     return 0;
 }
 
